@@ -99,9 +99,11 @@ public class UserEndpoint {
 		EntityManager mgr = getEntityManager();
 		try {
 			if (containsUser(user)) {
-				throw new EntityExistsException("Object already exists");
+				updateUser(user);
+//				throw new EntityExistsException("Object already exists");
+			} else {
+				mgr.persist(user);				
 			}
-			mgr.persist(user);
 		} finally {
 			mgr.close();
 		}
