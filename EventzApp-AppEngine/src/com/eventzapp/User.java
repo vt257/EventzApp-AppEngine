@@ -1,5 +1,6 @@
 package com.eventzapp;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -11,10 +12,14 @@ public class User {
 	private Long uid;
 	private List<Long> friendids;
 	private List<Long> likeids;
+	// TODO the location shouldn't be a string
+	// it should have all the data that the location on facebook can have
 	private String location;
 	private Long totalmatchmethod_id;
 	private Long eventfatchparams_id;
 	private Integer orderpreference;
+	private String accestoken;
+	private Date modified;
 	public User() {
 	}
 	public Long getUid() {
@@ -59,5 +64,17 @@ public class User {
 	}
 	public void setOrderpreference(Integer orderpreference) {
 		this.orderpreference = orderpreference;
+	}
+	public String getAccestoken() {
+		return accestoken;
+	}
+	public void setAccestoken(String accestoken) {
+		this.accestoken = accestoken;
+	}
+	public Date getModified() {
+		return modified;
+	}
+	public void setModified(Date modified) {
+		this.modified = modified;
 	}
 }

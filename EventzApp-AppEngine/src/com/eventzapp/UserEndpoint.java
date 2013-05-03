@@ -102,7 +102,7 @@ public class UserEndpoint {
 				updateUser(user);
 //				throw new EntityExistsException("Object already exists");
 			} else {
-				mgr.persist(user);				
+				mgr.persist(user);
 			}
 		} finally {
 			mgr.close();
@@ -153,9 +153,6 @@ public class UserEndpoint {
 	}
 
 	private boolean containsUser(User user) {
-		if (user.getUid() == null) {
-			return false;
-		}
 		EntityManager mgr = getEntityManager();
 		boolean contains = true;
 		try {

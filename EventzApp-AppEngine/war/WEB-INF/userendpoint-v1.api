@@ -173,6 +173,13 @@
           },
           "orderpreference" : {
             "type" : "integer"
+          },
+          "accestoken" : {
+            "type" : "string"
+          },
+          "modified" : {
+            "type" : "string",
+            "format" : "date-time"
           }
         }
       }

@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"wez405KDp3av28PdV0g9gQEA_Kk/OyezWgvYBDSChTRnLlgc5p7Us8I\"",
+ "etag": "\"wez405KDp3av28PdV0g9gQEA_Kk/MVz8YPzKrAvSi5Eh7_5q8y94CHM\"",
  "discoveryVersion": "v1",
  "id": "userendpoint:v1",
  "name": "userendpoint",
@@ -81,6 +81,9 @@
    "id": "User",
    "type": "object",
    "properties": {
+    "accestoken": {
+     "type": "string"
+    },
     "eventfatchparams_id": {
      "type": "string",
      "format": "int64"
@@ -101,6 +104,10 @@
     },
     "location": {
      "type": "string"
+    },
+    "modified": {
+     "type": "string",
+     "format": "date-time"
     },
     "orderpreference": {
      "type": "integer",
