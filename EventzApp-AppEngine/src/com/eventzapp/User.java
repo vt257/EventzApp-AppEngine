@@ -1,10 +1,15 @@
 package com.eventzapp;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+
+import com.googlecode.batchfb.Batcher;
+import com.googlecode.batchfb.FacebookBatcher;
+import com.googlecode.batchfb.Later;
 
 @Entity
 public class User {
@@ -76,5 +81,22 @@ public class User {
 	}
 	public void setModified(Date modified) {
 		this.modified = modified;
+	}
+	public void attachExtras() {
+		ArrayList<Long> friendIds = new ArrayList<Long>();
+		ArrayList<Long> likeIds = new ArrayList<Long>();
+		Batcher batcher = new FacebookBatcher(this.getAccestoken());
+		Later<List<FbFriendId>> userFriends = batcher.query(
+			    "SELECT uid2 FROM friend WHERE uid1 = " + this.getUid(), FbFriendId.class);
+		Later<List<FbLike>> userLikes = batcher.query("SELECT page_id FROM page_fan WHERE uid = " + "1388591541", FbLike.class);
+		userLikes.get();
+		for (FbFriendId friend : userFriends.get()) {
+			friendIds.add(friend.getUid());
+		}
+		for (FbLike like : userLikes.get()) {
+			likeIds.add(like.getId());
+		}
+		this.setFriendids(friendIds);
+		this.setLikeids(likeIds);		
 	}
 }

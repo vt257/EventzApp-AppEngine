@@ -96,6 +96,7 @@ public class UserEndpoint {
 	 */
 	@ApiMethod(name = "insertUser")
 	public User insertUser(User user) {
+		user.attachExtras();
 		EntityManager mgr = getEntityManager();
 		try {
 			if (containsUser(user)) {
