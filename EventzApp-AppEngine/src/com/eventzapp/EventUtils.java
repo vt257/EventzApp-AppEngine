@@ -7,7 +7,7 @@ import com.googlecode.batchfb.Later;
 
 public class EventUtils {
 	public static void getAllEvents(User user, EventFetchParams eventfetchparams) {
-		FacebookBatcher batcher = new FacebookBatcher(user.getAccestoken());
+		FacebookBatcher batcher = new FacebookBatcher(user.getAccesToken());
 		batcher.setMaxBatchSize(5);
 		batcher.setTimeout(59000);
 		Later<List<Event>> userEvents = batcher.query(

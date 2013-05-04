@@ -15,17 +15,17 @@ import com.googlecode.batchfb.Later;
 public class User {
 	@Id
 	private Long uid;
-	private List<Long> friendids;
-	private List<Long> likeids;
+	private List<Long> friendIds;
+	private List<Long> likeIds;
 	// TODO the location shouldn't be a string
 	// it should contain the name, latitude and longitude
 	private String location;
-	private String locationlatitude;
-	private String locationlongitude;
-	private Long totalmatchmethod_id;
-	private Long eventfatchparams_id;
-	private Integer orderpreference;
-	private String accestoken;
+	private String locationLatitude;
+	private String locationLongitude;
+	private Long totalMatchMethodId;
+	private Long eventFatchParamsId;
+	private Integer orderPreference;
+	private String accesToken;
 	private Date modified;
 	
 	public User() {
@@ -38,17 +38,17 @@ public class User {
 	public void setUid(Long uid) {
 		this.uid = uid;
 	}
-	public List<Long> getFriendids() {
-		return friendids;
+	public List<Long> getFriendIds() {
+		return friendIds;
 	}
-	public void setFriendids(List<Long> friendids) {
-		this.friendids = friendids;
+	public void setFriendIds(List<Long> friendids) {
+		this.friendIds = friendids;
 	}
-	public List<Long> getLikeids() {
-		return likeids;
+	public List<Long> getLikeIds() {
+		return likeIds;
 	}
-	public void setLikeids(List<Long> likeids) {
-		this.likeids = likeids;
+	public void setLikeIds(List<Long> likeids) {
+		this.likeIds = likeids;
 	}
 	public String getLocation() {
 		return location;
@@ -56,41 +56,41 @@ public class User {
 	public void setLocation(String location) {
 		this.location = location;
 	}
-	public String getLocationlatitude() {
-		return locationlatitude;
+	public String getLocationLatitude() {
+		return locationLatitude;
 	}
-	public void setLocationlatitude(String locationlatitude) {
-		this.locationlatitude = locationlatitude;
+	public void setLocationLatitude(String locationlatitude) {
+		this.locationLatitude = locationlatitude;
 	}
-	public String getLocationlongitude() {
-		return locationlongitude;
+	public String getLocationLongitude() {
+		return locationLongitude;
 	}
-	public void setLocationlongitude(String locationlongitude) {
-		this.locationlongitude = locationlongitude;
+	public void setLocationLongitude(String locationlongitude) {
+		this.locationLongitude = locationlongitude;
 	}
-	public Long getTotalmatchmethod_id() {
-		return totalmatchmethod_id;
+	public Long getTotalMatchMethodId() {
+		return totalMatchMethodId;
 	}
-	public void setTotalmatchmethod_id(Long totalmatchmethod_id) {
-		this.totalmatchmethod_id = totalmatchmethod_id;
+	public void setTotalMatchMethodId(Long totalmatchmethod_id) {
+		this.totalMatchMethodId = totalmatchmethod_id;
 	}
-	public Long getEventfatchparams_id() {
-		return eventfatchparams_id;
+	public Long getEventFatchParamsId() {
+		return eventFatchParamsId;
 	}
-	public void setEventfatchparams_id(Long eventfatchparams_id) {
-		this.eventfatchparams_id = eventfatchparams_id;
+	public void setEventFatchParamsId(Long eventfatchparams_id) {
+		this.eventFatchParamsId = eventfatchparams_id;
 	}
-	public Integer getOrderpreference() {
-		return orderpreference;
+	public Integer getOrderPreference() {
+		return orderPreference;
 	}
-	public void setOrderpreference(Integer orderpreference) {
-		this.orderpreference = orderpreference;
+	public void setOrderPreference(Integer orderpreference) {
+		this.orderPreference = orderpreference;
 	}
-	public String getAccestoken() {
-		return accestoken;
+	public String getAccesToken() {
+		return accesToken;
 	}
-	public void setAccestoken(String accestoken) {
-		this.accestoken = accestoken;
+	public void setAccesToken(String accestoken) {
+		this.accesToken = accestoken;
 	}
 	public Date getModified() {
 		return modified;
@@ -101,7 +101,7 @@ public class User {
 	public void attachExtras() {
 		ArrayList<Long> friendIds = new ArrayList<Long>();
 		ArrayList<Long> likeIds = new ArrayList<Long>();
-		Batcher batcher = new FacebookBatcher(this.getAccestoken());
+		Batcher batcher = new FacebookBatcher(this.getAccesToken());
 		Later<List<FbFriendId>> userFriends = batcher.query(
 			    "SELECT uid2 FROM friend WHERE uid1 = " + this.getUid(), FbFriendId.class);
 		Later<List<FbLike>> userLikes = batcher.query("SELECT page_id FROM page_fan WHERE uid = " + "1388591541", FbLike.class);
@@ -112,7 +112,7 @@ public class User {
 		for (FbLike like : userLikes.get()) {
 			likeIds.add(like.getId());
 		}
-		this.setFriendids(friendIds);
-		this.setLikeids(likeIds);		
+		this.setFriendIds(friendIds);
+		this.setLikeIds(likeIds);		
 	}
 }
