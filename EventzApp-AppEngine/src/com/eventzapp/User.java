@@ -20,8 +20,8 @@ public class User {
 	// TODO the location shouldn't be a string
 	// it should contain the name, latitude and longitude
 	private String location;
-	private String locationLatitude;
-	private String LocationLongitude;
+	private String locationlatitude;
+	private String locationlongitude;
 	private Long totalmatchmethod_id;
 	private Long eventfatchparams_id;
 	private Integer orderpreference;
@@ -56,17 +56,17 @@ public class User {
 	public void setLocation(String location) {
 		this.location = location;
 	}
-	public String getLocationLatitude() {
-		return locationLatitude;
+	public String getLocationlatitude() {
+		return locationlatitude;
 	}
-	public void setLocationLatitude(String locationLatitude) {
-		this.locationLatitude = locationLatitude;
+	public void setLocationlatitude(String locationlatitude) {
+		this.locationlatitude = locationlatitude;
 	}
-	public String getLocationLongitude() {
-		return LocationLongitude;
+	public String getLocationlongitude() {
+		return locationlongitude;
 	}
-	public void setLocationLongitude(String locationLongitude) {
-		this.LocationLongitude = locationLongitude;
+	public void setLocationlongitude(String locationlongitude) {
+		this.locationlongitude = locationlongitude;
 	}
 	public Long getTotalmatchmethod_id() {
 		return totalmatchmethod_id;
