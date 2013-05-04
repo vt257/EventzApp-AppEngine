@@ -18,15 +18,19 @@ public class User {
 	private List<Long> friendids;
 	private List<Long> likeids;
 	// TODO the location shouldn't be a string
-	// it should have all the data that the location on facebook can have
+	// it should contain the name, latitude and longitude
 	private String location;
+	private String locationLatitude;
+	private String LocationLongitude;
 	private Long totalmatchmethod_id;
 	private Long eventfatchparams_id;
 	private Integer orderpreference;
 	private String accestoken;
 	private Date modified;
+	
 	public User() {
 	}
+	
 	public Long getUid() {
 		return uid;
 	}
@@ -51,6 +55,18 @@ public class User {
 	}
 	public void setLocation(String location) {
 		this.location = location;
+	}
+	public String getLocationLatitude() {
+		return locationLatitude;
+	}
+	public void setLocationLatitude(String locationLatitude) {
+		this.locationLatitude = locationLatitude;
+	}
+	public String getLocationLongitude() {
+		return LocationLongitude;
+	}
+	public void setLocationLongitude(String locationLongitude) {
+		this.LocationLongitude = locationLongitude;
 	}
 	public Long getTotalmatchmethod_id() {
 		return totalmatchmethod_id;
