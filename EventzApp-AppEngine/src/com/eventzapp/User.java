@@ -1,5 +1,6 @@
 package com.eventzapp;
 
+import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -27,6 +28,7 @@ public class User {
 	private Integer orderPreference;
 	private String accesToken;
 	private Date modified;
+	private final List<Match> matchTypes = new ArrayList<Match>();
 	
 	public User() {
 	}
@@ -98,6 +100,12 @@ public class User {
 	public void setModified(Date modified) {
 		this.modified = modified;
 	}
+	
+	public List<Match> getMatchType() {
+		return matchTypes;
+	}
+	
+	
 	public void attachExtras() {
 		ArrayList<Long> friendIds = new ArrayList<Long>();
 		ArrayList<Long> likeIds = new ArrayList<Long>();
