@@ -6,9 +6,8 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-
 import com.google.appengine.api.datastore.Text;
+import com.google.appengine.repackaged.org.codehaus.jackson.annotate.JsonProperty;
 
 @Entity
 public class Event {

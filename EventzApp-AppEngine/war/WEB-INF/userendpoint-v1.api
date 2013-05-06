@@ -146,14 +146,14 @@
             "type" : "string",
             "format" : "int64"
           },
-          "friendids" : {
+          "friendIds" : {
             "type" : "array",
             "items" : {
               "type" : "string",
               "format" : "int64"
             }
           },
-          "likeids" : {
+          "likeIds" : {
             "type" : "array",
             "items" : {
               "type" : "string",
@@ -163,23 +163,65 @@
           "location" : {
             "type" : "string"
           },
-          "totalmatchmethod_id" : {
+          "locationLatitude" : {
+            "type" : "string"
+          },
+          "locationLongitude" : {
+            "type" : "string"
+          },
+          "totalMatchMethodId" : {
             "type" : "string",
             "format" : "int64"
           },
-          "eventfatchparams_id" : {
+          "eventFatchParamsId" : {
             "type" : "string",
             "format" : "int64"
           },
-          "orderpreference" : {
+          "orderPreference" : {
             "type" : "integer"
           },
-          "accestoken" : {
+          "accesToken" : {
             "type" : "string"
           },
           "modified" : {
             "type" : "string",
             "format" : "date-time"
+          },
+          "matchType" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "Match"
+            }
+          }
+        }
+      },
+      "Match" : {
+        "id" : "Match",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "keywordMap" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "Keyword"
+            }
+          }
+        }
+      },
+      "Keyword" : {
+        "id" : "Keyword",
+        "type" : "object",
+        "properties" : {
+          "key" : {
+            "type" : "string"
+          },
+          "value" : {
+            "type" : "number"
           }
         }
       }
