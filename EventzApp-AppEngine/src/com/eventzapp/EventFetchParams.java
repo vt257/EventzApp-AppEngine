@@ -9,7 +9,7 @@ import javax.persistence.Id;
 @Entity
 public class EventFetchParams {
 	@Id
-	private String id;
+	private Long id;
 	private String name;
 	private List<Long> friendids_touse;
 	private List<Long> friendlistids_touse;
@@ -20,10 +20,10 @@ public class EventFetchParams {
 	private List<Float> location_range;
 	public EventFetchParams() {
 	}	
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

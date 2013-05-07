@@ -1,36 +1,41 @@
 package com.eventzapp;
 
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
-public final class Match {
-	
-	private final String id;
-	private String name;
-	private List<Keyword> keywordMap;
-	
-	public Match(String id, String name, List<Keyword> keywordMap) {
-		this.id = id;
-		this.name = name;
-		this.keywordMap = keywordMap;
+@Entity
+public class Match {
+	@Id
+	private Long id;
+	private Long eid;
+	private Long matchTypeId;
+	private Float match;
+	public Match() {
 	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
-
-	public List<Keyword> getKeywordMap() {
-		return keywordMap;
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public Long getEid() {
+		return eid;
+	}
+	public void setEid(Long eid) {
+		this.eid = eid;
+	}
+	public Long getMatchTypeId() {
+		return matchTypeId;
+	}
+	public void setMatchTypeId(Long matchTypeId) {
+		this.matchTypeId = matchTypeId;
+	}
+	public Float getMatch() {
+		return match;
+	}
+	public void setMatch(Float match) {
+		this.match = match;
 	}
 	
 	
-
-
 }

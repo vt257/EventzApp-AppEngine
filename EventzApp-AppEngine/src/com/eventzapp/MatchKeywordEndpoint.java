@@ -1,12 +1,6 @@
 package com.eventzapp;
 
-import java.util.List;
-
-import javax.annotation.Nullable;
-import javax.inject.Named;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.Query;
+import com.eventzapp.EMF;
 
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
@@ -15,8 +9,17 @@ import com.google.api.server.spi.response.CollectionResponse;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.datanucleus.query.JPACursorHelper;
 
-@Api(name = "userendpoint", namespace = @ApiNamespace(ownerDomain = "eventzapp.com", ownerName = "eventzapp.com", packagePath = ""))
-public class UserEndpoint {
+import java.util.List;
+
+import javax.annotation.Nullable;
+import javax.inject.Named;
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
+@Api(name = "matchkeywordendpoint", namespace = @ApiNamespace(ownerDomain = "eventzapp.com", ownerName = "eventzapp.com", packagePath = ""))
+public class MatchKeywordEndpoint {
 
 	/**
 	 * This method lists all the entities inserted in datastore.
@@ -26,18 +29,19 @@ public class UserEndpoint {
 	 * persisted and a cursor to the next page.
 	 */
 	@SuppressWarnings({ "unchecked", "unused" })
-	@ApiMethod(name = "listUser")
-	public CollectionResponse<User> listUser(
+	@ApiMethod(name = "listMatchKeyword")
+	public CollectionResponse<MatchKeyword> listMatchKeyword(
 			@Nullable @Named("cursor") String cursorString,
 			@Nullable @Named("limit") Integer limit) {
 
 		EntityManager mgr = null;
 		Cursor cursor = null;
-		List<User> execute = null;
+		List<MatchKeyword> execute = null;
 
 		try {
 			mgr = getEntityManager();
-			Query query = mgr.createQuery("select from User as User");
+			Query query = mgr
+					.createQuery("select from MatchKeyword as MatchKeyword");
 			if (cursorString != null && cursorString != "") {
 				cursor = Cursor.fromWebSafeString(cursorString);
 				query.setHint(JPACursorHelper.CURSOR_HINT, cursor);
@@ -48,20 +52,20 @@ public class UserEndpoint {
 				query.setMaxResults(limit);
 			}
 
-			execute = (List<User>) query.getResultList();
+			execute = (List<MatchKeyword>) query.getResultList();
 			cursor = JPACursorHelper.getCursor(execute);
 			if (cursor != null)
 				cursorString = cursor.toWebSafeString();
 
 			// Tight loop for fetching all entities from datastore and accomodate
 			// for lazy fetch.
-			for (User obj : execute)
+			for (MatchKeyword obj : execute)
 				;
 		} finally {
 			mgr.close();
 		}
 
-		return CollectionResponse.<User> builder().setItems(execute)
+		return CollectionResponse.<MatchKeyword> builder().setItems(execute)
 				.setNextPageToken(cursorString).build();
 	}
 
@@ -71,16 +75,16 @@ public class UserEndpoint {
 	 * @param id the primary key of the java bean.
 	 * @return The entity with primary key id.
 	 */
-	@ApiMethod(name = "getUser")
-	public User getUser(@Named("id") Long id) {
+	@ApiMethod(name = "getMatchKeyword")
+	public MatchKeyword getMatchKeyword(@Named("id") String id) {
 		EntityManager mgr = getEntityManager();
-		User user = null;
+		MatchKeyword matchkeyword = null;
 		try {
-			user = mgr.find(User.class, id);
+			matchkeyword = mgr.find(MatchKeyword.class, id);
 		} finally {
 			mgr.close();
 		}
-		return user;
+		return matchkeyword;
 	}
 
 	/**
@@ -88,46 +92,43 @@ public class UserEndpoint {
 	 * exists in the datastore, an exception is thrown.
 	 * It uses HTTP POST method.
 	 *
-	 * @param user the entity to be inserted.
+	 * @param matchkeyword the entity to be inserted.
 	 * @return The inserted entity.
 	 */
-	@ApiMethod(name = "insertUser")
-	public User insertUser(User user) {
-		user.attachExtras();
-		EventUtils.getAllEventsFromFb(user);
+	@ApiMethod(name = "insertMatchKeyword")
+	public MatchKeyword insertMatchKeyword(MatchKeyword matchkeyword) {
 		EntityManager mgr = getEntityManager();
 		try {
-			if (containsUser(user)) {
-				updateUser(user);
-//				throw new EntityExistsException("Object already exists");
-			} else {
-				mgr.persist(user);
+			if (containsMatchKeyword(matchkeyword)) {
+				throw new EntityExistsException("Object already exists");
 			}
+			mgr.persist(matchkeyword);
 		} finally {
 			mgr.close();
 		}
-		return user;
+		return matchkeyword;
 	}
+
 	/**
 	 * This method is used for updating an existing entity. If the entity does not
 	 * exist in the datastore, an exception is thrown.
 	 * It uses HTTP PUT method.
 	 *
-	 * @param user the entity to be updated.
+	 * @param matchkeyword the entity to be updated.
 	 * @return The updated entity.
 	 */
-	@ApiMethod(name = "updateUser")
-	public User updateUser(User user) {
+	@ApiMethod(name = "updateMatchKeyword")
+	public MatchKeyword updateMatchKeyword(MatchKeyword matchkeyword) {
 		EntityManager mgr = getEntityManager();
 		try {
-			if (!containsUser(user)) {
+			if (!containsMatchKeyword(matchkeyword)) {
 				throw new EntityNotFoundException("Object does not exist");
 			}
-			mgr.persist(user);
+			mgr.persist(matchkeyword);
 		} finally {
 			mgr.close();
 		}
-		return user;
+		return matchkeyword;
 	}
 
 	/**
@@ -137,24 +138,25 @@ public class UserEndpoint {
 	 * @param id the primary key of the entity to be deleted.
 	 * @return The deleted entity.
 	 */
-	@ApiMethod(name = "removeUser")
-	public User removeUser(@Named("id") Long id) {
+	@ApiMethod(name = "removeMatchKeyword")
+	public MatchKeyword removeMatchKeyword(@Named("id") String id) {
 		EntityManager mgr = getEntityManager();
-		User user = null;
+		MatchKeyword matchkeyword = null;
 		try {
-			user = mgr.find(User.class, id);
-			mgr.remove(user);
+			matchkeyword = mgr.find(MatchKeyword.class, id);
+			mgr.remove(matchkeyword);
 		} finally {
 			mgr.close();
 		}
-		return user;
+		return matchkeyword;
 	}
 
-	private boolean containsUser(User user) {
+	private boolean containsMatchKeyword(MatchKeyword matchkeyword) {
 		EntityManager mgr = getEntityManager();
 		boolean contains = true;
 		try {
-			User item = mgr.find(User.class, user.getUid());
+			MatchKeyword item = mgr.find(MatchKeyword.class,
+					matchkeyword.getId());
 			if (item == null) {
 				contains = false;
 			}
