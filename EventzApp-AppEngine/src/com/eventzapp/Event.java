@@ -25,6 +25,8 @@ public class Event {
 	private String location;
 	@JsonProperty("start_time")
 	private Date start_time;
+	@JsonProperty("end_time")
+	private Date end_time;
 	@JsonProperty("timezone")
 	private String timezone;
 	@JsonProperty("attending_count")
@@ -67,6 +69,12 @@ public class Event {
 	}
 	public void setStart_time(Date start_time) {
 		this.start_time = start_time;
+	}
+	public Date getEnd_time() {
+		return end_time;
+	}
+	public void setEnd_time(Date end_time) {
+		this.end_time = end_time;
 	}
 	public String getTimezone() {
 		return timezone;
@@ -126,7 +134,6 @@ public class Event {
 					this.setUids(newUids);
 				}
 				eventendpoint.updateEvent(this);
-				//				throw new EntityExistsException("Object already exists");
 			} else {
 				this.setUids(Arrays.asList(uid));
 				mgr.persist(this);

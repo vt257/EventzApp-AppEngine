@@ -18,8 +18,8 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-@Api(name = "matchkeywordendpoint", namespace = @ApiNamespace(ownerDomain = "eventzapp.com", ownerName = "eventzapp.com", packagePath = ""))
-public class MatchKeywordEndpoint {
+@Api(name = "totalmatchmethodendpoint", namespace = @ApiNamespace(ownerDomain = "eventzapp.com", ownerName = "eventzapp.com", packagePath = ""))
+public class TotalMatchMethodEndpoint {
 
 	/**
 	 * This method lists all the entities inserted in datastore.
@@ -29,19 +29,19 @@ public class MatchKeywordEndpoint {
 	 * persisted and a cursor to the next page.
 	 */
 	@SuppressWarnings({ "unchecked", "unused" })
-	@ApiMethod(name = "listMatchKeyword")
-	public CollectionResponse<MatchKeyword> listMatchKeyword(
+	@ApiMethod(name = "listTotalMatchMethod")
+	public CollectionResponse<TotalMatchMethod> listTotalMatchMethod(
 			@Nullable @Named("cursor") String cursorString,
 			@Nullable @Named("limit") Integer limit) {
 
 		EntityManager mgr = null;
 		Cursor cursor = null;
-		List<MatchKeyword> execute = null;
+		List<TotalMatchMethod> execute = null;
 
 		try {
 			mgr = getEntityManager();
 			Query query = mgr
-					.createQuery("select from MatchKeyword as MatchKeyword");
+					.createQuery("select from TotalMatchMethod as TotalMatchMethod");
 			if (cursorString != null && cursorString != "") {
 				cursor = Cursor.fromWebSafeString(cursorString);
 				query.setHint(JPACursorHelper.CURSOR_HINT, cursor);
@@ -52,21 +52,21 @@ public class MatchKeywordEndpoint {
 				query.setMaxResults(limit);
 			}
 
-			execute = (List<MatchKeyword>) query.getResultList();
+			execute = (List<TotalMatchMethod>) query.getResultList();
 			cursor = JPACursorHelper.getCursor(execute);
 			if (cursor != null)
 				cursorString = cursor.toWebSafeString();
 
 			// Tight loop for fetching all entities from datastore and accomodate
 			// for lazy fetch.
-			for (MatchKeyword obj : execute)
+			for (TotalMatchMethod obj : execute)
 				;
 		} finally {
 			mgr.close();
 		}
 
-		return CollectionResponse.<MatchKeyword> builder().setItems(execute)
-				.setNextPageToken(cursorString).build();
+		return CollectionResponse.<TotalMatchMethod> builder()
+				.setItems(execute).setNextPageToken(cursorString).build();
 	}
 
 	/**
@@ -75,16 +75,16 @@ public class MatchKeywordEndpoint {
 	 * @param id the primary key of the java bean.
 	 * @return The entity with primary key id.
 	 */
-	@ApiMethod(name = "getMatchKeyword")
-	public MatchKeyword getMatchKeyword(@Named("id") String id) {
+	@ApiMethod(name = "getTotalMatchMethod")
+	public TotalMatchMethod getTotalMatchMethod(@Named("id") Long id) {
 		EntityManager mgr = getEntityManager();
-		MatchKeyword matchkeyword = null;
+		TotalMatchMethod totalmatchmethod = null;
 		try {
-			matchkeyword = mgr.find(MatchKeyword.class, id);
+			totalmatchmethod = mgr.find(TotalMatchMethod.class, id);
 		} finally {
 			mgr.close();
 		}
-		return matchkeyword;
+		return totalmatchmethod;
 	}
 
 	/**
@@ -92,21 +92,22 @@ public class MatchKeywordEndpoint {
 	 * exists in the datastore, an exception is thrown.
 	 * It uses HTTP POST method.
 	 *
-	 * @param matchkeyword the entity to be inserted.
+	 * @param totalmatchmethod the entity to be inserted.
 	 * @return The inserted entity.
 	 */
-	@ApiMethod(name = "insertMatchKeyword")
-	public MatchKeyword insertMatchKeyword(MatchKeyword matchkeyword) {
+	@ApiMethod(name = "insertTotalMatchMethod")
+	public TotalMatchMethod insertTotalMatchMethod(
+			TotalMatchMethod totalmatchmethod) {
 		EntityManager mgr = getEntityManager();
 		try {
-			if (containsMatchKeyword(matchkeyword)) {
+			if (containsTotalMatchMethod(totalmatchmethod)) {
 				throw new EntityExistsException("Object already exists");
 			}
-			mgr.persist(matchkeyword);
+			mgr.persist(totalmatchmethod);
 		} finally {
 			mgr.close();
 		}
-		return matchkeyword;
+		return totalmatchmethod;
 	}
 
 	/**
@@ -114,21 +115,22 @@ public class MatchKeywordEndpoint {
 	 * exist in the datastore, an exception is thrown.
 	 * It uses HTTP PUT method.
 	 *
-	 * @param matchkeyword the entity to be updated.
+	 * @param totalmatchmethod the entity to be updated.
 	 * @return The updated entity.
 	 */
-	@ApiMethod(name = "updateMatchKeyword")
-	public MatchKeyword updateMatchKeyword(MatchKeyword matchkeyword) {
+	@ApiMethod(name = "updateTotalMatchMethod")
+	public TotalMatchMethod updateTotalMatchMethod(
+			TotalMatchMethod totalmatchmethod) {
 		EntityManager mgr = getEntityManager();
 		try {
-			if (!containsMatchKeyword(matchkeyword)) {
+			if (!containsTotalMatchMethod(totalmatchmethod)) {
 				throw new EntityNotFoundException("Object does not exist");
 			}
-			mgr.persist(matchkeyword);
+			mgr.persist(totalmatchmethod);
 		} finally {
 			mgr.close();
 		}
-		return matchkeyword;
+		return totalmatchmethod;
 	}
 
 	/**
@@ -138,25 +140,25 @@ public class MatchKeywordEndpoint {
 	 * @param id the primary key of the entity to be deleted.
 	 * @return The deleted entity.
 	 */
-	@ApiMethod(name = "removeMatchKeyword")
-	public MatchKeyword removeMatchKeyword(@Named("id") String id) {
+	@ApiMethod(name = "removeTotalMatchMethod")
+	public TotalMatchMethod removeTotalMatchMethod(@Named("id") Long id) {
 		EntityManager mgr = getEntityManager();
-		MatchKeyword matchkeyword = null;
+		TotalMatchMethod totalmatchmethod = null;
 		try {
-			matchkeyword = mgr.find(MatchKeyword.class, id);
-			mgr.remove(matchkeyword);
+			totalmatchmethod = mgr.find(TotalMatchMethod.class, id);
+			mgr.remove(totalmatchmethod);
 		} finally {
 			mgr.close();
 		}
-		return matchkeyword;
+		return totalmatchmethod;
 	}
 
-	private boolean containsMatchKeyword(MatchKeyword matchkeyword) {
+	private boolean containsTotalMatchMethod(TotalMatchMethod totalmatchmethod) {
 		EntityManager mgr = getEntityManager();
 		boolean contains = true;
 		try {
-			MatchKeyword item = mgr.find(MatchKeyword.class,
-					matchkeyword.getId());
+			TotalMatchMethod item = mgr.find(TotalMatchMethod.class,
+					totalmatchmethod.getId());
 			if (item == null) {
 				contains = false;
 			}

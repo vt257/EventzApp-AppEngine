@@ -4,12 +4,12 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public final class MatchKeyword {
+public final class Keyword {
 	@Id
 	private String id;
 	private String keyword;
 	private Float weight;
-	public MatchKeyword() {
+	public Keyword() {
 	}
 	public String getId() {
 		return id;

@@ -103,8 +103,6 @@ public class User {
 	public List<Match> getMatchType() {
 		return matchTypes;
 	}
-	
-	
 	public void attachExtras() {
 		ArrayList<Long> friendIds = new ArrayList<Long>();
 		ArrayList<Long> likeIds = new ArrayList<Long>();
@@ -121,5 +119,33 @@ public class User {
 		}
 		this.setFriendIds(friendIds);
 		this.setLikeIds(likeIds);		
+	}
+	/**
+	 * Function that insert the default match types for the user
+	 * If the matchtype has an ancestor of a type user it belongs only to this user
+	 * If the matchtype doesn't have an ancestor it is public and can be used by every user
+	 * This method inserts the public matchtypes
+	 */
+	public void insertDefaultMatchTypes() {
+		// TODO implement this method
+	}
+	
+	/**
+	 * The method to insert the default total match method
+	 * again, if it doesn't have an ancestor of a type user it can be used by all the users
+	 * this method inserts the default one, and thus the one without any user ancestor 
+	 */
+	public void insertDefaultTotalMatchMethod() {
+		// TODO implement this method
+	}
+	
+	/**
+	 * the method to insert the default fetch params
+	 * again as previous two method takes care of the ancestors the same way
+	 * this method should insert an EventFetchParams without any ancestors 
+	 * because these are the default ones and should work for everybody
+	 */
+	public void insertDefaultEventFetchParams() {
+		// TODO implement this method
 	}
 }
