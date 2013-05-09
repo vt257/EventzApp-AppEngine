@@ -27,7 +27,6 @@ public class User {
 	private Integer orderPreference;
 	private String accesToken;
 	private Date modified;
-	private final List<Match> matchTypes = new ArrayList<Match>();
 	
 	public User() {
 	}
@@ -100,9 +99,6 @@ public class User {
 		this.modified = modified;
 	}
 	
-	public List<Match> getMatchType() {
-		return matchTypes;
-	}
 	public void attachExtras() {
 		ArrayList<Long> friendIds = new ArrayList<Long>();
 		ArrayList<Long> likeIds = new ArrayList<Long>();
@@ -127,7 +123,20 @@ public class User {
 	 * This method inserts the public matchtypes
 	 */
 	public void insertDefaultMatchTypes() {
-		// TODO implement this method
+		List<MatchType> defaultMatchTypes = new ArrayList<MatchType>();
+		Long uid = this.getUid();
+		defaultMatchTypes.add(new MatchType(uid, MatchType.FRIENDS_MATCH_NAME, MatchType.FRIENDS_MATCH_METHOD));
+		defaultMatchTypes.add(new MatchType(uid, MatchType.NEWPEOPLE_MATCH_NAME, MatchType.NEWPEOPLE_MATCH_METHOD));
+		defaultMatchTypes.add(new MatchType(uid, MatchType.FLIRTY_MATCH_NAME, MatchType.FLIRTY_MATCH_METHOD));
+		defaultMatchTypes.add(new MatchType(uid, MatchType.LOCATION_MATCH_NAME, MatchType.LOCATION_MATCH_METHOD));
+		defaultMatchTypes.add(new MatchType(uid, MatchType.TIME_MATCH_NAME, MatchType.TIME_MATCH_METHOD));
+		defaultMatchTypes.add(new MatchType(uid, MatchType.HISTORY_MATCH_NAME, MatchType.HISTORY_MATCH_METHOD));
+		defaultMatchTypes.add(new MatchType(uid, MatchType.PARTY_DEFAULT_MATCH_NAME, MatchType.KEYWORDMAP_MATCH_METHOD));
+		defaultMatchTypes.add(new MatchType(uid, MatchType.WORKEDUCATIONBUSINESS_DEFAULT_MATCH_NAME, MatchType.KEYWORDMAP_MATCH_METHOD));
+		defaultMatchTypes.add(new MatchType(uid, MatchType.CAUSE_DEFAULT_MATCH_NAME, MatchType.KEYWORDMAP_MATCH_METHOD));
+		for (MatchType mt : defaultMatchTypes) {
+			mt.insertOrUpdateMatchType(uid);
+		}
 	}
 	
 	/**

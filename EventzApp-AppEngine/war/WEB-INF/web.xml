@@ -5,11 +5,24 @@
   <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
   <init-param>
    <param-name>services</param-name>
-   <param-value>com.eventzapp.DeviceInfoEndpoint,com.eventzapp.EventEndpoint,com.eventzapp.MessageEndpoint,com.eventzapp.UserEndpoint</param-value>
+   <param-value>com.eventzapp.DeviceInfoEndpoint,com.eventzapp.EventEndpoint,com.eventzapp.EventFetchParamsEndpoint,com.eventzapp.EventMemberDataEndpoint,com.eventzapp.KeywordEndpoint,com.eventzapp.MatchTypeEndpoint,com.eventzapp.MessageEndpoint,com.eventzapp.TotalMatchMethodContribMapItemEndpoint,com.eventzapp.TotalMatchMethodEndpoint,com.eventzapp.UserEndpoint</param-value>
   </init-param>
  </servlet>
  <servlet-mapping>
   <servlet-name>SystemServiceServlet</servlet-name>
   <url-pattern>/_ah/spi/*</url-pattern>
+ </servlet-mapping>
+ 
+ <servlet>
+ <servlet-name>GetFbEventsServlet</servlet-name>
+  <servlet-class>com.eventzapp.servlets.GetFbEventsServlet</servlet-class>
+  <init-param>
+   <param-name>uid</param-name>
+   <param-value>0</param-value>
+  </init-param>
+ </servlet>
+ <servlet-mapping>
+  <servlet-name>GetFbEventsServlet</servlet-name>
+  <url-pattern>/get_fb_events</url-pattern>
  </servlet-mapping>
 </web-app>

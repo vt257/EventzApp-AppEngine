@@ -1,12 +1,24 @@
-package com.eventzapp;
+package com.eventzapp.servlets;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.eventzapp.EMF;
+import com.eventzapp.Event;
+import com.eventzapp.EventFetchParams;
+import com.eventzapp.EventFetchParamsEndpoint;
+import com.eventzapp.EventMemberData;
+import com.eventzapp.MatchType;
+import com.eventzapp.User;
+import com.eventzapp.UserEndpoint;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -17,11 +29,21 @@ import com.google.appengine.api.datastore.Query;
 import com.googlecode.batchfb.FacebookBatcher;
 import com.googlecode.batchfb.Later;
 
-public class EventUtils {
+public class GetFbEventsServlet extends HttpServlet {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static final String EVENT_FIELDS_TO_GET = "eid,attending_count,unsure_count,not_replied_count,description,location,name,venue,start_time,timezone";
 	private static final char LIST_SEPARATOR = ',';
-	
-	public static void getAllEventsFromFb(User user) {
+	// TODO combine cross-dependent insertions into transactions to have either all of them failing or all of them succeeding
+
+	public void doGet(HttpServletRequest req, HttpServletResponse resp) {
+		UserEndpoint userendpoint = new UserEndpoint();
+		getAllEventsFromFb(userendpoint.getUser(Long.parseLong(req.getParameter("uid"))));
+	}
+
+	private void getAllEventsFromFb(User user) {
 		// TODO these lists should be properly converted to strings
 		String friendIds_toUse;
 		String likeIds_toUse;
@@ -61,17 +83,23 @@ public class EventUtils {
 			    		" AND start_time<" + until.getTime()/1000 + " limit 100", Event.class);
 //		Later<List<Event>> userEvents = batcher.query("SELECT eid,attending_count,unsure_count,not_replied_count,description,location,name,venue,start_time,timezone" + 
 //													  " FROM event where eid IN(SELECT eid from event_member WHERE uid=" + user.getUid()+")", Event.class);
+		List<Long> eids = new ArrayList<Long>();
 		for (Event event : userEvents.get()) {
 			// adding this users id to the event so that he/she has access to it later
 			event.setModified(new Date());
-			//	TODO handle insertion which is supposed to add the uid to the already existing list
 			event.insertOrUpdateEvent(user.getUid());
+			eids.add(event.getEid());
 			FindEventMatches(user, event);
 		}
+		// TODO the order of getEventMembers and FindEventMatches is wrong.. but one has to get the ids somehow
+		// don't want to do another loop for this.. think of a smart way and chagne the order
+		getEventMembers(user, eids);
 		return;
 	}
 	
-	public static void FindEventMatches(User user, Event event) {
+	private void FindEventMatches(User user, Event event) {
+		// TODO this should be called on the server only once and removed afterwards
+		user.insertDefaultMatchTypes();
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 		EntityManager mgr = EMF.get().createEntityManager();
 		
@@ -90,11 +118,24 @@ public class EventUtils {
 		// insert the matches into the db
 	}
 	
-	public static void getEventMembers(User user, List<Long> Event) {
-		// TODO complete this function
+	private void getEventMembers(User user, List<Long> eids) {
+		String eidsString = StringUtils.join(eids, LIST_SEPARATOR);
+		
 		FacebookBatcher batcher = new FacebookBatcher(user.getAccesToken());
 		batcher.setMaxBatchSize(5);
 		batcher.setTimeout(59000);
-		Later<List<EventMemberData>> eventMemberDataList = batcher.query("select uid, eid, rsvp_status from event_member where eid IN(IDSOFTHEEVENTSTOFINDTHEPARTICIPANTSFOR) and uid IN (SELECT uid2 from friend where uid1 = me())", EventMemberData.class);
+		// TODO when the eidsString is too long, e.g. fetching 100 events at a time, the request takes too much time
+		// and it terminates.. devide this up to smaller request and set each of them as a task?? It would soon be time
+		// to connect all this with the front-end to understand how should one proceed
+		// TODO in this query only one eid is used now for fetching event members
+		Later<List<EventMemberData>> eventMemberDataList = batcher.query("select uid, eid, rsvp_status from event_member where eid IN("+
+				Long.toString(eids.get(1))+") and uid IN (SELECT uid2 from friend where uid1 = " + 
+																		user.getUid()+")", EventMemberData.class);
+		for (EventMemberData eventMemberData : eventMemberDataList.get()) {
+			eventMemberData.setId(eventMemberData.getEid() + "x" + eventMemberData.getUid());
+			// adding this eventmember to the datastore
+			eventMemberData.insertOrUpdateEventMemberData(user.getUid());
+		}		
 	}
+
 }

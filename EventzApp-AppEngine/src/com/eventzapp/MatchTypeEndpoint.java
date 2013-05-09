@@ -18,8 +18,8 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-@Api(name = "eventmemberdataendpoint", namespace = @ApiNamespace(ownerDomain = "eventzapp.com", ownerName = "eventzapp.com", packagePath = ""))
-public class EventMemberDataEndpoint {
+@Api(name = "matchtypeendpoint", namespace = @ApiNamespace(ownerDomain = "eventzapp.com", ownerName = "eventzapp.com", packagePath = ""))
+public class MatchTypeEndpoint {
 
 	/**
 	 * This method lists all the entities inserted in datastore.
@@ -29,19 +29,18 @@ public class EventMemberDataEndpoint {
 	 * persisted and a cursor to the next page.
 	 */
 	@SuppressWarnings({ "unchecked", "unused" })
-	@ApiMethod(name = "listEventMemberData")
-	public CollectionResponse<EventMemberData> listEventMemberData(
+	@ApiMethod(name = "listMatchType")
+	public CollectionResponse<MatchType> listMatchType(
 			@Nullable @Named("cursor") String cursorString,
 			@Nullable @Named("limit") Integer limit) {
 
 		EntityManager mgr = null;
 		Cursor cursor = null;
-		List<EventMemberData> execute = null;
+		List<MatchType> execute = null;
 
 		try {
 			mgr = getEntityManager();
-			Query query = mgr
-					.createQuery("select from EventMemberData as EventMemberData");
+			Query query = mgr.createQuery("select from MatchType as MatchType");
 			if (cursorString != null && cursorString != "") {
 				cursor = Cursor.fromWebSafeString(cursorString);
 				query.setHint(JPACursorHelper.CURSOR_HINT, cursor);
@@ -52,20 +51,20 @@ public class EventMemberDataEndpoint {
 				query.setMaxResults(limit);
 			}
 
-			execute = (List<EventMemberData>) query.getResultList();
+			execute = (List<MatchType>) query.getResultList();
 			cursor = JPACursorHelper.getCursor(execute);
 			if (cursor != null)
 				cursorString = cursor.toWebSafeString();
 
 			// Tight loop for fetching all entities from datastore and accomodate
 			// for lazy fetch.
-			for (EventMemberData obj : execute)
+			for (MatchType obj : execute)
 				;
 		} finally {
 			mgr.close();
 		}
 
-		return CollectionResponse.<EventMemberData> builder().setItems(execute)
+		return CollectionResponse.<MatchType> builder().setItems(execute)
 				.setNextPageToken(cursorString).build();
 	}
 
@@ -75,16 +74,16 @@ public class EventMemberDataEndpoint {
 	 * @param id the primary key of the java bean.
 	 * @return The entity with primary key id.
 	 */
-	@ApiMethod(name = "getEventMemberData")
-	public EventMemberData getEventMemberData(@Named("id") String id) {
+	@ApiMethod(name = "getMatchType")
+	public MatchType getMatchType(@Named("id") Long id) {
 		EntityManager mgr = getEntityManager();
-		EventMemberData eventmemberdata = null;
+		MatchType matchtype = null;
 		try {
-			eventmemberdata = mgr.find(EventMemberData.class, id);
+			matchtype = mgr.find(MatchType.class, id);
 		} finally {
 			mgr.close();
 		}
-		return eventmemberdata;
+		return matchtype;
 	}
 
 	/**
@@ -92,21 +91,21 @@ public class EventMemberDataEndpoint {
 	 * exists in the datastore, an exception is thrown.
 	 * It uses HTTP POST method.
 	 *
-	 * @param eventmemberdata the entity to be inserted.
+	 * @param matchtype the entity to be inserted.
 	 * @return The inserted entity.
 	 */
-	@ApiMethod(name = "insertEventMemberData")
-	public EventMemberData insertEventMemberData(EventMemberData eventmemberdata) {
+	@ApiMethod(name = "insertMatchType")
+	public MatchType insertMatchType(MatchType matchtype) {
 		EntityManager mgr = getEntityManager();
 		try {
-			if (containsEventMemberData(eventmemberdata)) {
+			if (containsMatchType(matchtype)) {
 				throw new EntityExistsException("Object already exists");
 			}
-			mgr.persist(eventmemberdata);
+			mgr.persist(matchtype);
 		} finally {
 			mgr.close();
 		}
-		return eventmemberdata;
+		return matchtype;
 	}
 
 	/**
@@ -114,21 +113,21 @@ public class EventMemberDataEndpoint {
 	 * exist in the datastore, an exception is thrown.
 	 * It uses HTTP PUT method.
 	 *
-	 * @param eventmemberdata the entity to be updated.
+	 * @param matchtype the entity to be updated.
 	 * @return The updated entity.
 	 */
-	@ApiMethod(name = "updateEventMemberData")
-	public EventMemberData updateEventMemberData(EventMemberData eventmemberdata) {
+	@ApiMethod(name = "updateMatchType")
+	public MatchType updateMatchType(MatchType matchtype) {
 		EntityManager mgr = getEntityManager();
 		try {
-			if (!containsEventMemberData(eventmemberdata)) {
+			if (!containsMatchType(matchtype)) {
 				throw new EntityNotFoundException("Object does not exist");
 			}
-			mgr.persist(eventmemberdata);
+			mgr.persist(matchtype);
 		} finally {
 			mgr.close();
 		}
-		return eventmemberdata;
+		return matchtype;
 	}
 
 	/**
@@ -138,25 +137,24 @@ public class EventMemberDataEndpoint {
 	 * @param id the primary key of the entity to be deleted.
 	 * @return The deleted entity.
 	 */
-	@ApiMethod(name = "removeEventMemberData")
-	public EventMemberData removeEventMemberData(@Named("id") String id) {
+	@ApiMethod(name = "removeMatchType")
+	public MatchType removeMatchType(@Named("id") Long id) {
 		EntityManager mgr = getEntityManager();
-		EventMemberData eventmemberdata = null;
+		MatchType matchtype = null;
 		try {
-			eventmemberdata = mgr.find(EventMemberData.class, id);
-			mgr.remove(eventmemberdata);
+			matchtype = mgr.find(MatchType.class, id);
+			mgr.remove(matchtype);
 		} finally {
 			mgr.close();
 		}
-		return eventmemberdata;
+		return matchtype;
 	}
 
-	private boolean containsEventMemberData(EventMemberData eventmemberdata) {
+	private boolean containsMatchType(MatchType matchtype) {
 		EntityManager mgr = getEntityManager();
 		boolean contains = true;
 		try {
-			EventMemberData item = mgr.find(EventMemberData.class,
-					eventmemberdata.getId());
+			MatchType item = mgr.find(MatchType.class, matchtype.getId());
 			if (item == null) {
 				contains = false;
 			}

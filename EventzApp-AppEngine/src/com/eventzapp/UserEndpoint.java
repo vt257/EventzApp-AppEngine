@@ -1,5 +1,7 @@
 package com.eventzapp;
 
+import static com.google.appengine.api.taskqueue.TaskOptions.Builder.withUrl;
+
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -13,6 +15,9 @@ import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.response.CollectionResponse;
 import com.google.appengine.api.datastore.Cursor;
+import com.google.appengine.api.taskqueue.Queue;
+import com.google.appengine.api.taskqueue.QueueFactory;
+import com.google.appengine.api.taskqueue.TaskOptions.Method;
 import com.google.appengine.datanucleus.query.JPACursorHelper;
 
 @Api(name = "userendpoint", namespace = @ApiNamespace(ownerDomain = "eventzapp.com", ownerName = "eventzapp.com", packagePath = ""))
@@ -94,7 +99,6 @@ public class UserEndpoint {
 	@ApiMethod(name = "insertUser")
 	public User insertUser(User user) {
 		user.attachExtras();
-		EventUtils.getAllEventsFromFb(user);
 		EntityManager mgr = getEntityManager();
 		try {
 			if (containsUser(user)) {
@@ -106,6 +110,10 @@ public class UserEndpoint {
 		} finally {
 			mgr.close();
 		}
+		// start a new thread to get the events
+		// TODO don't keep this here..
+		Queue queue = QueueFactory.getDefaultQueue();
+	    queue.add(withUrl("/get_fb_events").method(Method.GET).param("uid", Long.toString(user.getUid())));
 		return user;
 	}
 	/**

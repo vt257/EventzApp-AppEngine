@@ -8,7 +8,7 @@ public class Match {
 	@Id
 	private Long id;
 	private Long eid;
-	private Long matchTypeId;
+	private String matchTypeId;
 	private Float match;
 	public Match() {
 	}
@@ -24,10 +24,10 @@ public class Match {
 	public void setEid(Long eid) {
 		this.eid = eid;
 	}
-	public Long getMatchTypeId() {
+	public String getMatchTypeId() {
 		return matchTypeId;
 	}
-	public void setMatchTypeId(Long matchTypeId) {
+	public void setMatchTypeId(String matchTypeId) {
 		this.matchTypeId = matchTypeId;
 	}
 	public Float getMatch() {
