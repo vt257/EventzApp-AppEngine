@@ -164,16 +164,16 @@
             "type" : "string"
           },
           "locationLatitude" : {
-            "type" : "string"
+            "type" : "number"
           },
           "locationLongitude" : {
-            "type" : "string"
+            "type" : "number"
           },
           "totalMatchMethodId" : {
             "type" : "string",
             "format" : "int64"
           },
-          "eventFatchParamsId" : {
+          "eventFetchParamsId" : {
             "type" : "string",
             "format" : "int64"
           },
@@ -187,43 +187,15 @@
             "type" : "string",
             "format" : "date-time"
           },
-          "matchType" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "Match"
-            }
+          "gender" : {
+            "$ref" : "Gender"
           }
         }
       },
-      "Match" : {
-        "id" : "Match",
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "string"
-          },
-          "name" : {
-            "type" : "string"
-          },
-          "keywordMap" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "Keyword"
-            }
-          }
-        }
-      },
-      "Keyword" : {
-        "id" : "Keyword",
-        "type" : "object",
-        "properties" : {
-          "key" : {
-            "type" : "string"
-          },
-          "value" : {
-            "type" : "number"
-          }
-        }
+      "Gender" : {
+        "id" : "Gender",
+        "type" : "string",
+        "enum" : [ "male", "female" ]
       }
     },
     "methods" : {

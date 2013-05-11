@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.Id;
 
 @Entity
@@ -18,6 +19,22 @@ public class EventFetchParams {
 	private Date until;
 	private List<String> location;
 	private List<Float> location_range;
+	
+	public EventFetchParams(Long id, String name, List<Long> friendids_touse,
+			List<Long> friendlistids_touse, List<Long> likeids_touse,
+			Date since, Date until, List<String> location,
+			List<Float> location_range) {
+		this.id = id;
+		this.name = name;
+		this.friendids_touse = friendids_touse;
+		this.friendlistids_touse = friendlistids_touse;
+		this.likeids_touse = likeids_touse;
+		this.since = since;
+		this.until = until;
+		this.location = location;
+		this.location_range = location_range;
+	}
+	
 	public EventFetchParams() {
 	}	
 	public Long getId() {
@@ -74,5 +91,20 @@ public class EventFetchParams {
 	}
 	public void setLocation_range(List<Float> location_range) {
 		this.location_range = location_range;
+	}
+	
+	public EventFetchParams insertOrUpdateEventFetchParams(Long uid) {
+		EntityManager mgr = EMF.get().createEntityManager();
+		EventFetchParamsEndpoint efpep = new EventFetchParamsEndpoint();
+		try {
+			if (mgr.find(EventFetchParams.class, this.getId()) != null) {
+				efpep.updateEventFetchParams(this);
+			} else {
+				mgr.persist(this);	
+			}
+		} finally {
+			mgr.close();
+		}
+		return this;
 	}
 }

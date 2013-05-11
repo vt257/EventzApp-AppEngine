@@ -50,8 +50,8 @@ public class GetFbEventsServlet extends HttpServlet {
 		String friendListIds_toUse;
 		Date since;
 		Date until;
-		if (user.getEventFatchParamsId() != 0 && user.getEventFatchParamsId() != null) {
-			EventFetchParams eventFetchParams = new EventFetchParamsEndpoint().getEventFetchParams(user.getEventFatchParamsId());
+		if (user.getEventFetchParamsId() != 0 && user.getEventFetchParamsId() != null) {
+			EventFetchParams eventFetchParams = new EventFetchParamsEndpoint().getEventFetchParams(user.getEventFetchParamsId());
 			friendIds_toUse = StringUtils.join(eventFetchParams.getFriendids_touse(), LIST_SEPARATOR);
 			likeIds_toUse = StringUtils.join(eventFetchParams.getLikeids_touse(), LIST_SEPARATOR);
 			friendListIds_toUse = StringUtils.join(eventFetchParams.getFriendlistids_touse(), LIST_SEPARATOR);

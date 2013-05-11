@@ -20,10 +20,10 @@ public class User {
 	// TODO the location shouldn't be a string
 	// it should contain the name, latitude and longitude
 	private String location;
-	private String locationLatitude;
-	private String locationLongitude;
+	private Double locationLatitude;
+	private Double locationLongitude;
 	private Long totalMatchMethodId;
-	private Long eventFatchParamsId;
+	private Long eventFetchParamsId;
 	private Integer orderPreference;
 	private String accesToken;
 	private Date modified;
@@ -56,16 +56,16 @@ public class User {
 	public void setLocation(String location) {
 		this.location = location;
 	}
-	public String getLocationLatitude() {
+	public Double getLocationLatitude() {
 		return locationLatitude;
 	}
-	public void setLocationLatitude(String locationlatitude) {
+	public void setLocationLatitude(Double locationlatitude) {
 		this.locationLatitude = locationlatitude;
 	}
-	public String getLocationLongitude() {
+	public Double getLocationLongitude() {
 		return locationLongitude;
 	}
-	public void setLocationLongitude(String locationlongitude) {
+	public void setLocationLongitude(Double locationlongitude) {
 		this.locationLongitude = locationlongitude;
 	}
 	public Long getTotalMatchMethodId() {
@@ -74,11 +74,11 @@ public class User {
 	public void setTotalMatchMethodId(Long totalmatchmethod_id) {
 		this.totalMatchMethodId = totalmatchmethod_id;
 	}
-	public Long getEventFatchParamsId() {
-		return eventFatchParamsId;
+	public Long getEventFetchParamsId() {
+		return eventFetchParamsId;
 	}
-	public void setEventFatchParamsId(Long eventfatchparams_id) {
-		this.eventFatchParamsId = eventfatchparams_id;
+	public void setEventFetchParamsId(Long eventfatchparams_id) {
+		this.eventFetchParamsId = eventfatchparams_id;
 	}
 	public Integer getOrderPreference() {
 		return orderPreference;
@@ -99,6 +99,13 @@ public class User {
 		this.modified = modified;
 	}
 	
+	
+	public Gender getGender() {
+		//TODO: Get the user's gender from very beginning
+		
+		return Gender.male;
+	}
+	
 	public void attachExtras() {
 		ArrayList<Long> friendIds = new ArrayList<Long>();
 		ArrayList<Long> likeIds = new ArrayList<Long>();
@@ -106,6 +113,7 @@ public class User {
 		Later<List<FbFriendId>> userFriends = batcher.query(
 			    "SELECT uid2 FROM friend WHERE uid1 = " + this.getUid(), FbFriendId.class);
 		Later<List<FbLike>> userLikes = batcher.query("SELECT page_id FROM page_fan WHERE uid = " + "1388591541", FbLike.class);
+		//TODO change the uid to the user's uid
 		userLikes.get();
 		for (FbFriendId friend : userFriends.get()) {
 			friendIds.add(friend.getUid());
@@ -116,8 +124,9 @@ public class User {
 		this.setFriendIds(friendIds);
 		this.setLikeIds(likeIds);		
 	}
+	
 	/**
-	 * Function that insert the default match types for the user
+	 * Method that inserts the default match types for the user
 	 * If the matchtype has an ancestor of a type user it belongs only to this user
 	 * If the matchtype doesn't have an ancestor it is public and can be used by every user
 	 * This method inserts the public matchtypes
@@ -146,6 +155,8 @@ public class User {
 	 */
 	public void insertDefaultTotalMatchMethod() {
 		// TODO implement this method
+		TotalMatchMethod totalMatchMthd = new TotalMatchMethod(totalMatchMethodId, "Default Total");
+		totalMatchMthd.insertDefaultTotalMatchMethodContribMapItems();
 	}
 	
 	/**
@@ -156,5 +167,13 @@ public class User {
 	 */
 	public void insertDefaultEventFetchParams() {
 		// TODO implement this method
+		List<Long> friendlistids_touse = new ArrayList<Long>(); //Empty list by default
+		Date since = new Date(); //Now by default
+		Date until = new Date(Long.MAX_VALUE); //End of time by default
+		List<String> locations = new ArrayList<String>() {{add(location);}}; //Users location by default
+		List<Float> location_range = new ArrayList<Float>() {{add(new Float(50));}}; //TODO: remove the hard typed 50
+		EventFetchParams defaultEventFetchParams = new EventFetchParams(eventFetchParamsId, "default", friendIds, friendlistids_touse, likeIds, 
+																		since, until, locations, location_range);
+		defaultEventFetchParams.insertOrUpdateEventFetchParams(uid);
 	}
 }

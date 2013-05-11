@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"wez405KDp3av28PdV0g9gQEA_Kk/MVz8YPzKrAvSi5Eh7_5q8y94CHM\"",
+ "etag": "\"_eRzJ5rb6y2Sm1GT1st-3xOUuXg/qB20tvSVbzUxyYanvIE-f1e1WhM\"",
  "discoveryVersion": "v1",
  "id": "userendpoint:v1",
  "name": "userendpoint",
@@ -81,21 +81,21 @@
    "id": "User",
    "type": "object",
    "properties": {
-    "accestoken": {
+    "accesToken": {
      "type": "string"
     },
-    "eventfatchparams_id": {
+    "eventFatchParamsId": {
      "type": "string",
      "format": "int64"
     },
-    "friendids": {
+    "friendIds": {
      "type": "array",
      "items": {
       "type": "string",
       "format": "int64"
      }
     },
-    "likeids": {
+    "likeIds": {
      "type": "array",
      "items": {
       "type": "string",
@@ -105,15 +105,21 @@
     "location": {
      "type": "string"
     },
+    "locationLatitude": {
+     "type": "string"
+    },
+    "locationLongitude": {
+     "type": "string"
+    },
     "modified": {
      "type": "string",
      "format": "date-time"
     },
-    "orderpreference": {
+    "orderPreference": {
      "type": "integer",
      "format": "int32"
     },
-    "totalmatchmethod_id": {
+    "totalMatchMethodId": {
      "type": "string",
      "format": "int64"
     },

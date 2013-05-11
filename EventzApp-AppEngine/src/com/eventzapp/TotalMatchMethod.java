@@ -11,11 +11,16 @@ import javax.persistence.Id;
  *
  */
 public class TotalMatchMethod {
+
 	@Id
 	private Long id;
 	private String name;
 	
 	public TotalMatchMethod() {
+	}
+	public TotalMatchMethod(Long id, String name) {
+		this.id = id;
+		this.name = name;
 	}
 	public Long getId() {
 		return id;

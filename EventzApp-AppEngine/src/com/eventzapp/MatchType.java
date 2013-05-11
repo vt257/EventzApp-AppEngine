@@ -1,5 +1,7 @@
 package com.eventzapp;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
@@ -8,6 +10,9 @@ import javax.persistence.Id;
 
 @Entity
 public class MatchType {
+	
+	public static final Float SCALE = new Float(100);
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private String id;
@@ -109,26 +114,51 @@ public class MatchType {
 	
 	private Float matchFriends(User user, Event event) {
 		// TODO match according to the number of friends attending the event
-		return null;
+
+		List<Long> friends = user.getFriendIds();
+		List<Long> attending = event.getUids();
+		int count = 0;
+		for (Long friendId : friends) {
+			if (attending.contains(friendId))
+				count++;
+		}
+		return new Float(Math.round(Math.min(SCALE / 10, count)));
+	}
+	
+	private Float matchCosy(User user, Event event) {
+		List<Long> friends = user.getFriendIds();
+		List<Long> attending = event.getUids();
+		int count = 0;
+		for (Long friendId : friends) {
+			if (attending.contains(friendId))
+				count++;
+		}
+		return SCALE * count / attending.size();
 	}
 
 	private Float matchNewPeople(User user, Event event) {
 		// TODO match according to the percentage of new people
-		return null;
+		
+		return SCALE - matchCosy(user, event);
 	}
 
 	private Float matchFlirty(User user, Event event) {
 		// TODO match according to the percentage of male/female depending on the sex of the user
-		return null;
+		
+		Gender gender = user.getGender();
+		return gender == Gender.female ? event.getMalepercent() : 1 - event.getMalepercent();
 	}
 	
 	private Float matchLocation(User user, Event event) {
 		// TODO match using the locations of the event and the user
+		
+		
 		return null;
 	}
 
 	private Float matchTime(User user, Event event) {
 		// TODO match using the time of the event by comparing with the local android calendar of the user
+		
 		return null;
 	}
 
